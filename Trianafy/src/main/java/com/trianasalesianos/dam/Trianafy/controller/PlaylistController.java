@@ -18,7 +18,9 @@ public class PlaylistController {
     @GetMapping("/")
     public List<Playlist> findAll(){
 
-        return repository.findAll().getSongs().lenght();
+        return repository.findAll()
+                .getName()
+                .getId.getSongs().lenght();
 
     }
 
