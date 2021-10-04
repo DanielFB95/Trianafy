@@ -3,12 +3,10 @@ package com.trianasalesianos.dam.Trianafy.controller;
 import com.trianasalesianos.dam.Trianafy.model.Artist;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 
@@ -27,4 +25,18 @@ public class ArtistController {
                 .body(repository.save(n));
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity <Artist> edit(@RequestBody Artist a, @PathVariable Long id){
+
+        return ResponseEntity.of(
+                repository.findById(id).map(c ->{
+                    a.setName(a.getName());
+                    repository.save(c);
+                    return c;
+                })
+        );
+    }
+
+
 }
