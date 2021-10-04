@@ -27,7 +27,7 @@ public class ArtistController {
 
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
 
         repository.deleteById(id);
 
@@ -38,7 +38,7 @@ public class ArtistController {
     }
 
     @GetMapping("/")
-    ResponseEntity<List<Artist>> findAll(){
+    public ResponseEntity<List<Artist>> findAll(){
 
         return ResponseEntity.ok()
                             .body(repository.findAll());
