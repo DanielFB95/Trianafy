@@ -10,12 +10,9 @@ import java.util.List;
 @RestController
 public class ArtistController {
 
-    @GetMapping("/")
-    public List<Artist> findAll(){
 
-        return repository.findAll();
 
-    }
+
     @GetMapping("/{id}")
     public Artist findOne(@PathVariable("id") Long id){
 
