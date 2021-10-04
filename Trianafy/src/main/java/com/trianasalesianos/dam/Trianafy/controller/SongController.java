@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@RestController("/song")
+@RestController
+@RequestMapping("/song")
 @RequiredArgsConstructor
 public class SongController {
 
