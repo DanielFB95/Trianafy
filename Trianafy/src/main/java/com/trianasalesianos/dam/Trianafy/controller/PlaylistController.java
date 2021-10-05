@@ -1,11 +1,15 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
+import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
+import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/playlist")
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class PlaylistController {
 
     private final PlaylistRepository repository;
+    private final SongRepository songRepository;
 
     /**
      * Borrar playlist por ID
@@ -31,7 +36,7 @@ public class PlaylistController {
     @GetMapping("{id}/song/{id}")
     public ResponseEntity<Playlist> findOneSong(@PathVariable Long id, @PathVariable Long id2){
 
-        return ResponseEntity.of(repository.findById(id).
+        return ResponseEntity.of(repository.findById(id).get().getSongs().get(id2));
 
 
     }
