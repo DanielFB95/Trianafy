@@ -22,11 +22,12 @@ public class PlaylistController {
 
     /**
      * Borrar playlist por ID
+     *
      * @param id
      * @return codigo de estado 204 NO CONTENT
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id) {
 
         repository.deleteById(id);
         return ResponseEntity.noContent()
@@ -36,13 +37,14 @@ public class PlaylistController {
 
     /**
      * Crea la Playlist sin canciones
+     *
      * @param pld
      * @return
      */
     @PostMapping("/")
-    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto pld){
+    public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto pld) {
 
-        if(pld.getName() == null || pld.getDesc() == null){
+        if (pld.getName() == null || pld.getDesc() == null) {
 
             return ResponseEntity.badRequest().build();
         }
@@ -52,6 +54,20 @@ public class PlaylistController {
                         .createPlaylistDtoToPlaylist(pld)));
 
 
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Playlist> edit(@RequestBody CreatePlaylistDto pld, @PathVariable Long id) {
+
+        return ResponseEntity.of(repository.findById(id).map(
+                x -> {
+                    x.setName(pld.getName());
+                    x.setDescription(pld.getName());
+                    repository.save(x);
+                    return x;
+                })
+        );
 
 
     }

@@ -1,23 +1,20 @@
 package com.trianasalesianos.dam.Trianafy.dto;
 
-
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class SongDtoConverter {
 
-    public Song createSongDtoToSong(CreateSongDto c) {
+    public Song createSongDtoToSong (CreateSongDto c){
         return new Song(
-                c.getTitle(),
-                c.getAlbum(),
-                c.getYear()
+            c.getTitle(),
+            c.getAlbum(),
+            c.getYear()
         );
     }
 
-    public GetSongDto songToGetSongDto(Song s) {
+    public GetSongDto songToGetSongDto(Song s){
 
         return GetSongDto.builder()
                 .title(s.getTitle())
@@ -25,8 +22,7 @@ public class SongDtoConverter {
                 .album(s.getAlbum())
                 .year(s.getYear())
                 .build();
-
-
     }
+
 
 }
