@@ -3,6 +3,8 @@ package com.trianasalesianos.dam.Trianafy.dto;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class SongDtoConverter {
 
@@ -14,7 +16,7 @@ public class SongDtoConverter {
         );
     }
 
-    public GetSongDto songToGetSongDto(Song s){
+    public GetSongDto songToGetSongDto(Optional<Object> s){
 
         return GetSongDto.builder()
                 .title(s.getTitle())
