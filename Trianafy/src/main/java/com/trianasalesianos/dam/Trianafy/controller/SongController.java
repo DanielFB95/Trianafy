@@ -1,11 +1,15 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
+
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
+
+
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,4 +40,20 @@ public class SongController {
             return ResponseEntity.ok().body(result);
         }
     }
+  
+    /**
+     * Buscar cancion por ID
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<Song> findOne(@PathVariable Long id){
+
+        return ResponseEntity.of(repository.findById(id));
+
+
+    }
+
+
+  
+
+
 }
