@@ -16,7 +16,7 @@ public class SongDtoConverter {
         );
     }
 
-    public GetSongDto songToGetSongDto(Optional<Object> s){
+    public GetSongDto songToGetSongDto(Song s){
 
         return GetSongDto.builder()
                 .title(s.getTitle())

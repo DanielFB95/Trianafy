@@ -1,6 +1,7 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 
+import com.trianasalesianos.dam.Trianafy.dto.CreateSongDto;
 import com.trianasalesianos.dam.Trianafy.dto.GetSongDto;
 import com.trianasalesianos.dam.Trianafy.dto.SongDtoConverter;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
@@ -35,19 +36,19 @@ public class SongController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GetSongDto> edit(@RequestBody Song s, @PathVariable Long id){
+    public ResponseEntity<Song> edit(@RequestBody CreateSongDto s, @PathVariable Long id){
 
-        Optional<Song> song = repository.findById(id).map(c -> {
-                                    c.setTitle(s.getTitle());
-                                    c.setArtist(s.getArtist());
-                                    c.setAlbum(s.getAlbum());
-                                    c.setYear(s.getYear());
-                                    repository.save(c);
-                                    return c;
-        });
 
-        GetSongDto gsd = dtoConverter.songToGetSongDto(Optional.of(song));
-        return ResponseEntity.ok().body(gsd);
+        return ResponseEntity.of(repository.findById(id).map(c -> {
+            c.setAlbum(s.getAlbum());
+            c.setTitle(s.getTitle());
+            c.setYear(s.getYear());
+            repository.save(c);
+            return c;
+        })
+        );
+
+
     }
 
 }
