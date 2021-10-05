@@ -22,7 +22,7 @@ public class PlaylistController {
      * @return codigo de estado 204 NO CONTENT
      */
     @DeleteMapping("/{id}")
-    ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id){
 
         repository.deleteById(id);
         return ResponseEntity.noContent()
