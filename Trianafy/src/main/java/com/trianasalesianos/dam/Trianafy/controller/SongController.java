@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/song")
+@RequestMapping("/songs")
 @RequiredArgsConstructor
 public class SongController {
 
