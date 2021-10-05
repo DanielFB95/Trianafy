@@ -13,6 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.trianasalesianos.dam.Trianafy.dto.CreateSongDto;
+import com.trianasalesianos.dam.Trianafy.model.Song;
+import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/songs")
@@ -25,16 +32,16 @@ public class SongController {
 
 
     @GetMapping("/")
-    public ResponseEntity<List<GetSongDto>> findAll(){
+    public ResponseEntity<List<GetSongDto>> findAll() {
 
         List<Song> data = songRepository.findAll();
 
-        if(data.isEmpty()){
+        if (data.isEmpty()) {
             return ResponseEntity.notFound().build();
-        }else {
+        } else {
             List<GetSongDto> result =
                     data.stream()
-                            .map(dtoConverter :: songToGetSongDto)
+                            .map(dtoConverter::songToGetSongDto)
                             .collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
         }
@@ -45,7 +52,7 @@ public class SongController {
      * Buscar cancion por ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Song> findOne(@PathVariable Long id){
+    public ResponseEntity<Song> findOne(@PathVariable Long id) {
 
         return ResponseEntity.of(songRepository.findById(id));
 
@@ -53,19 +60,31 @@ public class SongController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Song> edit(@RequestBody CreateSongDto s, @PathVariable Long id){
+    public ResponseEntity<Song> edit(@RequestBody CreateSongDto s, @PathVariable Long id) {
 
 
         return ResponseEntity.of(songRepository.findById(id).map(c -> {
-            c.setAlbum(s.getAlbum());
-            c.setTitle(s.getTitle());
-            c.setYear(s.getYear());
-            songRepository.save(c);
-            return c;
-        })
+                    c.setAlbum(s.getAlbum());
+                    c.setTitle(s.getTitle());
+                    c.setYear(s.getYear());
+                    songRepository.save(c);
+                    return c;
+                })
         );
 
 
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Song> create(@RequestBody CreateSongDto newSong) {
+
+
+        Song s = dtoConverter.createSongDtoToSong(newSong);
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(songRepository.save(s));
     }
 
 }
