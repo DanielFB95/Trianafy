@@ -24,7 +24,7 @@ public class SongController {
      * Buscar cancion por ID
      */
     @GetMapping("/{id}")
-    ResponseEntity<Song> findOne(@PathVariable Long id){
+    public ResponseEntity<Song> findOne(@PathVariable Long id){
 
         return ResponseEntity.of(repository.findById(id));
 
