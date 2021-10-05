@@ -3,7 +3,6 @@ package com.trianasalesianos.dam.Trianafy.dto;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 
 @Component
 public class PlaylistDtoConverter {
@@ -22,7 +21,8 @@ public class PlaylistDtoConverter {
 
         return PostPlaylistDto.builder()
                 .name(pl.getName())
-                .description(pl.getDescription()).build();
+                .description(pl.getDescription())
+                .build();
 
     }
 
