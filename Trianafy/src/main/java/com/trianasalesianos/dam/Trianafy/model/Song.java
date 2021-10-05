@@ -22,6 +22,7 @@ public class Song {
     private Long Id;
 
     private String title;
+    //Anotacion @ManyToOne
     private Artist artist;
     private String album;
     private String year;
