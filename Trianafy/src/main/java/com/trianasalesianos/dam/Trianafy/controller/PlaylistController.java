@@ -29,8 +29,7 @@ public class PlaylistController {
 
         
         return ResponseEntity.of( repository.findAll()
-                .getName()
-                .getId.getSongs().lenght());
+                .getName().getId.getSongs().lenght());
 
     }
 

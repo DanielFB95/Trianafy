@@ -1,17 +1,14 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 
+import com.trianasalesianos.dam.Trianafy.dto.GetSongDto;
+import com.trianasalesianos.dam.Trianafy.dto.SongDtoConverter;
 import com.trianasalesianos.dam.Trianafy.model.Song;
-import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
-
 
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +20,6 @@ public class SongController {
 
     private final SongRepository songRepository;
     private final SongDtoConverter dtoConverter;
-    private final ArtistRepository artistRepository;
 
     @GetMapping("/")
     public ResponseEntity<List<GetSongDto>> findAll(){
@@ -40,20 +36,23 @@ public class SongController {
             return ResponseEntity.ok().body(result);
         }
     }
-  
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        songRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
     /**
      * Buscar cancion por ID
      */
     @GetMapping("/{id}")
     public ResponseEntity<Song> findOne(@PathVariable Long id){
 
-        return ResponseEntity.of(repository.findById(id));
+        return ResponseEntity.of(songRepository.findById(id));
 
 
     }
-
-
-  
 
 
 }
