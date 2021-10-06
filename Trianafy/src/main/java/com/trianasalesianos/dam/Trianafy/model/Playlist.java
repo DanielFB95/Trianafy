@@ -1,5 +1,6 @@
 package com.trianasalesianos.dam.Trianafy.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Data
+@AllArgsConstructor
 public class Playlist {
 
     @Id
@@ -21,6 +23,7 @@ public class Playlist {
     private String name;
     private String description;
 
+
     @ElementCollection
     private List<Song> songs;
 
@@ -29,4 +32,6 @@ public class Playlist {
         this.description = description;
         this.songs = songs;
     }
+
+
 }
