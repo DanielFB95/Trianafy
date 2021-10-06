@@ -21,6 +21,7 @@ public class Playlist {
     private String name;
     private String description;
 
+
     @ElementCollection
     private List<Song> songs;
 

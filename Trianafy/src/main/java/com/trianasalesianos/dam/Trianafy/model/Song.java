@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 @Data
@@ -22,12 +23,20 @@ public class Song {
     private Long Id;
 
     private String title;
+    @ManyToOne
     private Artist artist;
     private String album;
     private String year;
 
     public Song(String title, String album, String year) {
         this.title = title;
+        this.album = album;
+        this.year = year;
+    }
+
+    public Song(String title, Artist artist, String album, String year) {
+        this.title = title;
+        this.artist = artist;
         this.album = album;
         this.year = year;
     }
