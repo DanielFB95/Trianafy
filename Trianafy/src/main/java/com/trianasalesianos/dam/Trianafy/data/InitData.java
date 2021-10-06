@@ -1,6 +1,7 @@
 package com.trianasalesianos.dam.Trianafy.data;
 
 import com.trianasalesianos.dam.Trianafy.model.Artist;
+import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
@@ -9,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -41,6 +44,21 @@ public class InitData {
                 )
 
         );
+
+        List<Song> ejemplos = new ArrayList<Song>();
+        ejemplos.add(songRepo.getById(2L));
+        ejemplos.add(songRepo.getById(3L));
+
+        playlistRepo.saveAll(
+
+                new Playlist("Una playlist", "Esta es una playlist de prueba", ejemplos);
+
+
+
+
+        );
+
+
 
 
     }
