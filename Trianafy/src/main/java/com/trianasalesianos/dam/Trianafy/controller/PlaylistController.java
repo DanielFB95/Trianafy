@@ -68,16 +68,16 @@ public class PlaylistController {
      *
      * @param pld
      * @return
-
+     */
     @PostMapping("/")
     public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto pld) {
 
-        if (pld.getName() == null || pld.getDesc() == null) {
+        if (pld.getName() == null || pld.getDescription() == null) {
 
             return ResponseEntity.badRequest().build();
         }
 
-        PlaylistDtoConverter playlistDto;
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(repository.save(playlistDto
                         .createPlaylistDtoToPlaylist(pld)));
@@ -85,7 +85,7 @@ public class PlaylistController {
 
     }
 
-    */
+
 
 
     @PutMapping("/{id}")
