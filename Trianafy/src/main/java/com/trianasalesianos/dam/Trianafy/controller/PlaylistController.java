@@ -33,12 +33,4 @@ public class PlaylistController {
 
     }
 
-    @GetMapping("{id}/song/{id}")
-    public ResponseEntity<Playlist> findOneSong(@PathVariable Long id, @PathVariable Long id2){
-
-        return ResponseEntity.of(repository.findById(id).get().getSongs().get(id2));
-
-
-    }
-
 }
