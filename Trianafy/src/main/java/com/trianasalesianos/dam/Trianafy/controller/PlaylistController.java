@@ -1,10 +1,8 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
-import com.trianasalesianos.dam.Trianafy.dto.GetPlaylistDto;
+import com.trianasalesianos.dam.Trianafy.dto.*;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
-import com.trianasalesianos.dam.Trianafy.dto.CreatePlaylistDto;
-import com.trianasalesianos.dam.Trianafy.dto.PlaylistDtoConverter;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
@@ -30,6 +28,7 @@ public class PlaylistController {
     private final PlaylistRepository repository;
     private final SongRepository songRepository;
     private final PlaylistDtoConverter playlistDto;
+    private final SongDtoConverter songDto;
 
     /**
      * Borrar playlist por ID
@@ -143,6 +142,22 @@ public class PlaylistController {
 
             return ResponseEntity.ok().body(result);
         }
+    }
+
+    @PostMapping("/{id}/songs/{id2}")
+    public ResponseEntity<List<GetSongDto>> addSong(@RequestBody Song newSong, @PathVariable Long id, @PathVariable Long id2){
+
+        List <Song> songs = repository.getById(id).getSongs();
+
+
+        List<GetSongDto> result = songs.stream().map(songDto::songToGetSongDto).collect(Collectors.toList());
+
+        songs.add(newSong);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                            .body(result);
+
+
     }
 
 
