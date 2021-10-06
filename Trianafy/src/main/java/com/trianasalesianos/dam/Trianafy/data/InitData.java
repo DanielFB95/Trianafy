@@ -45,12 +45,9 @@ public class InitData {
 
         );
 
-        List<Song> ejemplos = new ArrayList<Song>();
-        ejemplos.add(songRepo.getById(2L));
-        ejemplos.add(songRepo.getById(3L));
 
         playlistRepo.save(
-                new Playlist("Una playlist", "Esta es una playlist de prueba", ejemplos)
+                new Playlist("Una playlist", "Esta es una playlist de prueba", List.of(songRepo.getById(2L), songRepo.getById(3L)))
                 );
 
 
