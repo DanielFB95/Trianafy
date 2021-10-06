@@ -65,7 +65,7 @@ public class ArtistController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity <Artist> edit(@RequestBody Artist a, @PathVariable Long id){
+    public ResponseEntity<Artist> edit(@RequestBody Artist a, @PathVariable Long id){
 
         return ResponseEntity.of(
                 repository.findById(id).map(c ->{
