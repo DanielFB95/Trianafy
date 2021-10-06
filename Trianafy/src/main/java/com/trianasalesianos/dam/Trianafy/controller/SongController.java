@@ -51,7 +51,8 @@ public class SongController {
     /**
      * Buscar cancion por ID
      */
-    @GetMapping("/{id}")
+    @GetMapping(value = {"/{id}", "/lists/{id}/songs/{id2}"})
+    //@GetMapping("/{id}")
     public ResponseEntity<Song> findOne(@PathVariable Long id) {
 
         return ResponseEntity.of(songRepository.findById(id));
@@ -77,6 +78,7 @@ public class SongController {
 
     @PostMapping("/")
     public ResponseEntity<Song> create(@RequestBody CreateSongDto newSong) {
+
 
 
         Song s = dtoConverter.createSongDtoToSong(newSong);

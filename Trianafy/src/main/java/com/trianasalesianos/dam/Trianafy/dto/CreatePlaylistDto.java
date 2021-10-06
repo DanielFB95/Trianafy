@@ -14,9 +14,6 @@ import java.util.List;
 
 public class CreatePlaylistDto {
 
-
-    private Long playlistId;
-
     private String name;
     private String description;
 

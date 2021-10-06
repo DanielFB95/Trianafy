@@ -1,5 +1,6 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
+import com.trianasalesianos.dam.Trianafy.dto.GetPlaylistDto;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.dto.CreatePlaylistDto;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -101,6 +104,28 @@ public class PlaylistController {
     }
 
 
+    /**
+     *
+     * @return Lista de Playlists
+     */
+    @GetMapping("/")
+
+    public ResponseEntity<List<GetPlaylistDto>> findAll(){
+
+        List<Playlist> data = repository.findAll();
+
+        if (data.isEmpty()){
+
+            return ResponseEntity.notFound().build();
+        }else{
+
+            List<GetPlaylistDto> result = data.stream()
+                    .map(playlistDto:: playlistToGetPlaylistDto)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok().body(result);
+        }
+    }
 
 
 }

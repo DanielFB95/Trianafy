@@ -30,5 +30,8 @@ public class Playlist {
         this.songs = songs;
     }
 
-
+    public Playlist(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
