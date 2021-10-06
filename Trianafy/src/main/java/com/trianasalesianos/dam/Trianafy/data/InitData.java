@@ -49,16 +49,9 @@ public class InitData {
         ejemplos.add(songRepo.getById(2L));
         ejemplos.add(songRepo.getById(3L));
 
-        playlistRepo.saveAll(
-
-                new Playlist("Una playlist", "Esta es una playlist de prueba", ejemplos);
-
-
-
-
-        );
-
-
+        playlistRepo.save(
+                new Playlist("Una playlist", "Esta es una playlist de prueba", ejemplos)
+                );
 
 
     }
