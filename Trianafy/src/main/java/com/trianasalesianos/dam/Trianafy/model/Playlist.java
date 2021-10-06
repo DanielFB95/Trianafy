@@ -3,10 +3,7 @@ package com.trianasalesianos.dam.Trianafy.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,7 +18,7 @@ public class Playlist {
     private String name;
     private String description;
 
-
+    @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
     @ElementCollection
     private List<Song> songs;
 

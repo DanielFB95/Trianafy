@@ -25,6 +25,10 @@ public class Song {
     private String title;
     @ManyToOne
     private Artist artist;
+
+    @ManyToOne
+    private Playlist playlist;
+
     private String album;
     private String year;
 

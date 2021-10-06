@@ -65,7 +65,7 @@ public class PlaylistController {
      *
      * @param pld
      * @return
-     */
+
     @PostMapping("/")
     public ResponseEntity<Playlist> create(@RequestBody CreatePlaylistDto pld) {
 
@@ -81,6 +81,8 @@ public class PlaylistController {
 
 
     }
+
+    */
 
 
     @PutMapping("/{id}")
