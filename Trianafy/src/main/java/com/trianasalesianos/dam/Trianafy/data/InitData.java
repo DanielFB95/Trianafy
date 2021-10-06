@@ -46,8 +46,9 @@ public class InitData {
         );
 
 
+
         playlistRepo.save(
-                new Playlist("Una playlist", "Esta es una playlist de prueba", List.of(songRepo.getById(2L), songRepo.getById(3L)))
+                new Playlist("Una playlist", "Esta es una playlist de prueba", Arrays.asList(songRepo.getById(2L), songRepo.getById(3L)))
                 );
 
 
