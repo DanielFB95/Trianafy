@@ -27,10 +27,10 @@ public class Playlist {
     @ElementCollection
     private List<Song> songs;
 
-    public Playlist(String name, String description, List<Song> songs) {
+    public Playlist(String name, String description) {
         this.name = name;
         this.description = description;
-        this.songs = songs;
+
     }
 
 

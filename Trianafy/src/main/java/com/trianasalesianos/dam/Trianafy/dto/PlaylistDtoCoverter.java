@@ -13,8 +13,8 @@ public class PlaylistDtoCoverter {
     public Playlist createPlaylistDtoToPlaylist(CreatePlaylistDto playlist) {
         return new Playlist(
                 playlist.getName(),
-                playlist.getDescription(),
-                null);
+                playlist.getDescription()
+        );
 
 
 
@@ -25,9 +25,11 @@ public class PlaylistDtoCoverter {
 
         return GetPlaylistDto
                 .builder()
+                .id(p.getId())
                 .name(p.getName())
                 .description(p.getDescription())
-                .numberOfSongs(p.getSongs().stream().filter().count());
+                .numberOfSongs(p.getSongs().size())
+                .build();
 
 
     }
