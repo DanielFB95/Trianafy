@@ -4,7 +4,9 @@ package com.trianasalesianos.dam.Trianafy.controller;
 import com.trianasalesianos.dam.Trianafy.dto.CreateSongDto;
 import com.trianasalesianos.dam.Trianafy.dto.GetSongDto;
 import com.trianasalesianos.dam.Trianafy.dto.SongDtoConverter;
+import com.trianasalesianos.dam.Trianafy.model.Artist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
+import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ public class SongController {
 
     private final SongRepository songRepository;
     private final SongDtoConverter dtoConverter;
+    private final ArtistRepository artistRepository;
 
 
     /*@GetMapping("/")
@@ -88,6 +91,10 @@ public class SongController {
 
 
         Song s = dtoConverter.createSongDtoToSong(newSong);
+
+        Artist a = artistRepository.findById(newSong.getArtistId()).orElse(null);
+
+        s.setArtist(a);
 
 
         return ResponseEntity

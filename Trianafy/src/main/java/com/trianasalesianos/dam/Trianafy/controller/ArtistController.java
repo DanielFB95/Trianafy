@@ -1,7 +1,9 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 import com.trianasalesianos.dam.Trianafy.model.Artist;
+import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
+import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/artist")
@@ -26,6 +29,7 @@ import java.util.List;
 public class ArtistController {
 
     private final ArtistRepository repository;
+    private final SongRepository songsRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<Artist>  findOne(@PathVariable Long id){
@@ -37,6 +41,14 @@ public class ArtistController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
+
+
+        songsRepository.findAll()
+                                .stream()
+                                .filter( x -> x.getArtist().getId() == id)
+                                .findFirst()
+                                .get()
+                                .setArtist(null);
 
         repository.deleteById(id);
 

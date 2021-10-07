@@ -44,22 +44,6 @@ public class PlaylistController {
 
     }
 
-    @DeleteMapping("{id}/songs/{id2}")
-    public ResponseEntity<?> deleteSong(@PathVariable Long id, @PathVariable Long id2){
-
-        if(repository.findById(id).isEmpty() || songRepository.findById(id2).isEmpty()){
-            return ResponseEntity
-                    .notFound()
-                    .build();
-        }
-            List<Song> songs = repository.getById(id).getSongs();
-            songs.remove(songs.stream().filter( s -> s.getId() == id2));
-            repository.getById(id).setSongs(songs);
-            return ResponseEntity
-                    .noContent()
-                    .build();
-
-    }
 
 
     /**
@@ -164,6 +148,22 @@ public class PlaylistController {
 
     }
 
+    @DeleteMapping("{id}/songs/{id2}")
+    public ResponseEntity<?> deleteSong(@PathVariable Long id, @PathVariable Long id2){
+
+        if(repository.findById(id).isEmpty() || songRepository.findById(id2).isEmpty()){
+            return ResponseEntity
+                    .notFound()
+                    .build();
+        }
+        List<Song> songs = repository.getById(id).getSongs();
+        songs.remove(songs.stream().filter( s -> s.getId() == id2));
+        repository.getById(id).setSongs(songs);
+        return ResponseEntity
+                .noContent()
+                .build();
+
+    }
 
 
 
