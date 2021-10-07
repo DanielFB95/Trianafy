@@ -98,9 +98,19 @@ public class PlaylistController {
 
 
     @GetMapping("/{id}/songs/{id2}")
-    public ResponseEntity<Song> findOneSong(@PathVariable Long id2) {
+    public ResponseEntity<GetSongDto> findOneSong(@PathVariable Long id, @PathVariable Long id2) {
+        if(repository.getById(id) == null || songRepository.getById(id2) == null){
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.of(songRepository.findById(id2));
+        if(!repository.getById(id).getSongs().stream().allMatch(x -> x.getId() == id2)){
+
+            return ResponseEntity.notFound().build();
+        }
+
+       GetSongDto dto = songDto.songToGetSongDto(songRepository.getById(id2));
+
+        return ResponseEntity.ok().body(dto);
 
 
     }
@@ -142,8 +152,12 @@ public class PlaylistController {
             Playlist pl = repository.getById(id1);
 
             Song newSong = songRepository.getById(id2);
-            List <Song> songs = songRepository.findAll();
-            songs.stream().filter(x -> x.getId() == id2).findFirst().get().setPlaylist(pl);
+
+            newSong.setPlaylist(pl);
+
+
+
+
 
             playlist.getSongs().add(newSong);
             repository.save(pl);
@@ -172,7 +186,9 @@ public class PlaylistController {
                 .get()
                 .getSongs()
                 .remove(songRepository.getById(id2));
-        
+
+        songRepository.getById(id2).setPlaylist(null);
+
         return ResponseEntity
                 .noContent()
                 .build();
