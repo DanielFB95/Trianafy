@@ -22,7 +22,7 @@ public class InitData {
     private final ArtistRepository artistRepo;
     private final PlaylistRepository playlistRepo;
 
-
+/*
     @PostConstruct
     public void init() {
 
@@ -54,5 +54,7 @@ public class InitData {
 
     }
 
+
+ */
 
 }

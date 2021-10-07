@@ -144,19 +144,23 @@ public class PlaylistController {
         }
     }
 
-    @PostMapping("/{id}/songs/{id2}")
-    public ResponseEntity<List<GetSongDto>> addSong(@RequestBody Song newSong, @PathVariable Long id, @PathVariable Long id2){
+    @PostMapping("/{id1}/songs/{id2}")
+    public ResponseEntity<Playlist> addSong(@RequestBody Playlist playlist, @PathVariable Long id1,
+                                                @PathVariable Long id2) {
 
-        List <Song> songs = repository.getById(id).getSongs();
+        if ((repository.findById(id1) == null) || (songRepository.findById(id2) == null)){
+            return ResponseEntity.badRequest().build();
+        }else {
+            Playlist pl = repository.findById(id1).orElse(null);
 
+            Song song = songRepository.findById(id2).orElse(null);
 
-        List<GetSongDto> result = songs.stream().map(songDto::songToGetSongDto).collect(Collectors.toList());
+            playlist.getSongs().add(song);
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(repository.save(pl));
 
-        songs.add(newSong);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(result);
-
+        }
 
     }
 
