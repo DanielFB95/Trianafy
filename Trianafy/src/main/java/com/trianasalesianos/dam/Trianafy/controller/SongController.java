@@ -66,6 +66,16 @@ public class SongController {
     /**
      * Buscar cancion por ID
      */
+    @Operation(summary = "Muestra una canción.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado la canción.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
    // @GetMapping(value = {"/{id}", "/lists/{id}/songs/{id2}"})
     @GetMapping("/{id}")
     public ResponseEntity<Song> findOne(@PathVariable Long id) {

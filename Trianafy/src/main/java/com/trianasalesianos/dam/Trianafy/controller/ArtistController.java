@@ -42,7 +42,16 @@ public class ArtistController {
     }
 
 
-
+    @Operation(summary = "Borra un artista.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha encontrado el artista.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
 
@@ -54,6 +63,16 @@ public class ArtistController {
 
     }
 
+    @Operation(summary = "Obtiene todos los artistas.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado artistas.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han encontrado artistas.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @GetMapping("/")
     public ResponseEntity<List<Artist>> findAll(){
 
@@ -67,11 +86,11 @@ public class ArtistController {
             @ApiResponse(responseCode = "200",
                     description = "Se ha añadido un artista.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))}),
+                            schema = @Schema(implementation = Artist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado ningún artista.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))})})
+                            schema = @Schema(implementation = Artist.class))})})
     @PostMapping("/")
     public ResponseEntity<Artist> create(@RequestBody Artist n){
 
@@ -86,11 +105,11 @@ public class ArtistController {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado un artista y se ha modificado.",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))}),
+                            schema = @Schema(implementation = Artist.class))}),
             @ApiResponse(responseCode = "404",
                     description = "No se ha encontrado ningún artista.",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))})})
+                            schema = @Schema(implementation = Artist.class))})})
     @PutMapping("/{id}")
     public ResponseEntity<Artist> edit(@RequestBody Artist a, @PathVariable Long id){
 
