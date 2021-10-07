@@ -8,6 +8,7 @@ import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -128,25 +129,35 @@ public class PlaylistController {
         }
     }
 
+    
+
     @PostMapping("/{id1}/songs/{id2}")
     public ResponseEntity<Playlist> addSong(@RequestBody Playlist playlist, @PathVariable Long id1,
                                                 @PathVariable Long id2) {
 
-        if ((repository.findById(id1) == null) || (songRepository.findById(id2) == null)){
+        if ((repository.getById(id1) == null) || (songRepository.getById(id2) == null)){
             return ResponseEntity.badRequest().build();
         }else {
-            Playlist pl = repository.findById(id1).orElse(null);
 
-            Song song = songRepository.findById(id2).orElse(null);
+            Playlist pl = repository.getById(id1);
 
-            playlist.getSongs().add(song);
+            Song newSong = songRepository.getById(id2);
+            List <Song> songs = songRepository.findAll();
+            songs.stream().filter(x -> x.getId() == id2).findFirst().get().setPlaylist(pl);
+
+            playlist.getSongs().add(newSong);
+            repository.save(pl);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(repository.save(pl));
+                    .body(pl);
 
         }
 
     }
+
+
+
+
 
     @DeleteMapping("{id}/songs/{id2}")
     public ResponseEntity<?> deleteSong(@PathVariable Long id, @PathVariable Long id2){
