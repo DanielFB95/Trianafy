@@ -155,10 +155,6 @@ public class PlaylistController {
 
             newSong.setPlaylist(pl);
 
-
-
-
-
             playlist.getSongs().add(newSong);
             repository.save(pl);
             return ResponseEntity
@@ -182,12 +178,14 @@ public class PlaylistController {
                     .build();
         }
 
-        repository.findById(id)
-                .get()
-                .getSongs()
-                .remove(songRepository.getById(id2));
+        Playlist pl = repository.getById(id);
 
-        songRepository.getById(id2).setPlaylist(null);
+        Song song = songRepository.getById(id2);
+
+        pl.getSongs().remove(song);
+
+        song.setPlaylist(null);
+        repository.save(pl);
 
         return ResponseEntity
                 .noContent()
