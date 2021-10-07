@@ -167,9 +167,12 @@ public class PlaylistController {
                     .notFound()
                     .build();
         }
-        List<Song> songs = repository.getById(id).getSongs();
-        songs.remove(songs.stream().filter( s -> s.getId() == id2));
-        repository.getById(id).setSongs(songs);
+
+        repository.findById(id)
+                .get()
+                .getSongs()
+                .remove(songRepository.getById(id2));
+        
         return ResponseEntity
                 .noContent()
                 .build();
