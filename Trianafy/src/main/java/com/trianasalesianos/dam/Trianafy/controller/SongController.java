@@ -8,6 +8,11 @@ import com.trianasalesianos.dam.Trianafy.model.Artist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +90,20 @@ public class SongController {
 
     }
 
+
+
+    @Operation(summary = "Crea una canción")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha creado y guardado la canción",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha guardado la canción debido a un error",
+                    content = @Content)
+    })
+
+
     @PostMapping("/")
     public ResponseEntity<Song> create(@RequestBody CreateSongDto newSong) {
 
@@ -101,6 +120,15 @@ public class SongController {
                 .status(HttpStatus.CREATED)
                 .body(songRepository.save(s));
     }
+
+
+    @Operation(summary = "Elimina una canción")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Borrado realizado correctamente",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})
+    })
 
 
     @DeleteMapping("/{id}")

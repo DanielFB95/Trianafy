@@ -4,6 +4,11 @@ import com.trianasalesianos.dam.Trianafy.model.Artist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 
@@ -26,10 +31,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/artist")
 @RequiredArgsConstructor
+
 public class ArtistController {
 
     private final ArtistRepository repository;
     private final SongRepository songsRepository;
+
+
+    @Operation(summary = "Muestra un artista por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado el artista",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el id del artista",
+                    content = @Content),
+    })
 
     @GetMapping("/{id}")
     public ResponseEntity<Artist>  findOne(@PathVariable Long id){

@@ -6,6 +6,11 @@ import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -109,6 +114,17 @@ public class PlaylistController {
      *
      * @return Lista de Playlists
      */
+
+    @Operation(summary = "Muestra todas las playlist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado las playlist",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Playlist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay ninguna playlist",
+                    content = @Content),
+    })
     @GetMapping("/")
 
     public ResponseEntity<List<GetPlaylistDto>> findAll(){
@@ -127,6 +143,17 @@ public class PlaylistController {
             return ResponseEntity.ok().body(result);
         }
     }
+
+    @Operation(summary = "Añade una cancion existente a una playlist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha añadido la canción a la playlist",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Playlist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna playlist o canción",
+                    content = @Content)
+    })
 
     @PostMapping("/{id1}/songs/{id2}")
     public ResponseEntity<Playlist> addSong(@RequestBody Playlist playlist, @PathVariable Long id1,
