@@ -6,6 +6,12 @@ import com.trianasalesianos.dam.Trianafy.dto.GetSongDto;
 import com.trianasalesianos.dam.Trianafy.dto.SongDtoConverter;
 import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,14 +30,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/songs")
 @RequiredArgsConstructor
+@Tag(name = "Song", description = "Controller of songs.")
 public class SongController {
 
 
     private final SongRepository songRepository;
     private final SongDtoConverter dtoConverter;
 
-
-    /*@GetMapping("/")
+    @Operation(summary = "Obtiene una lista de canciones.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado una canción y se ha modificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
+    @GetMapping("/")
     public ResponseEntity<List<GetSongDto>> findAll() {
 
         List<Song> data = songRepository.findAll();
@@ -45,14 +61,7 @@ public class SongController {
                             .collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
         }
-    }*/
-
-    @GetMapping("/")
-    public ResponseEntity<List<Song>> findAll(){
-
-        return ResponseEntity.ok().body(songRepository.findAll());
     }
-
 
     /**
      * Buscar cancion por ID
@@ -66,19 +75,29 @@ public class SongController {
 
     }
 
+    @Operation(summary = "Modifica una canción.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado una canción y se ha modificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
     @PutMapping("/{id}")
     public ResponseEntity<Song> edit(@RequestBody CreateSongDto s, @PathVariable Long id) {
 
 
-        return ResponseEntity.of(songRepository.findById(id).map(c -> {
-                    c.setAlbum(s.getAlbum());
-                    c.setTitle(s.getTitle());
-                    c.setYear(s.getYear());
-                    songRepository.save(c);
-                    return c;
+        return ResponseEntity.of(songRepository.findById(id).map(
+                x -> {
+                    x.setYear(s.getYear());
+                    x.setTitle(s.getTitle());
+                    x.setAlbum(s.getAlbum());
+                    songRepository.save(x);
+                    return x;
                 })
         );
-
 
     }
 

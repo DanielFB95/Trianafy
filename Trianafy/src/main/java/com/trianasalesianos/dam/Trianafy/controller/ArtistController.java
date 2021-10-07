@@ -1,7 +1,14 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 import com.trianasalesianos.dam.Trianafy.model.Artist;
+import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/artist")
 @RequiredArgsConstructor
+@Tag(name = "Artist", description = "Controller of artist.")
 public class ArtistController {
 
     private final ArtistRepository repository;
@@ -54,7 +62,16 @@ public class ArtistController {
 
     }
 
-
+    @Operation(summary = "Añade un artista.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha añadido un artista.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
     @PostMapping("/")
     public ResponseEntity<Artist> create(@RequestBody Artist n){
 
@@ -64,6 +81,16 @@ public class ArtistController {
 
     }
 
+    @Operation(summary = "Modifica un artista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado un artista y se ha modificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
     @PutMapping("/{id}")
     public ResponseEntity<Artist> edit(@RequestBody Artist a, @PathVariable Long id){
 

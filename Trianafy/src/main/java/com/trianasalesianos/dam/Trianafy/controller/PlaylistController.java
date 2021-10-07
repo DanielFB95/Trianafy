@@ -8,6 +8,12 @@ import com.trianasalesianos.dam.Trianafy.dto.PlaylistDtoConverter;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
@@ -25,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/lists")
 @RequiredArgsConstructor
+@Tag(name = "Playlist", description = "Controller of playlists")
 public class PlaylistController {
 
     private final PlaylistRepository repository;
@@ -45,6 +52,16 @@ public class PlaylistController {
 
     }
 
+    @Operation(summary = "Borra una canción de la playlist.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado la canción.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
     @DeleteMapping("{id}/songs/{id2}")
     public ResponseEntity<?> deleteSong(@PathVariable Long id, @PathVariable Long id2){
 
@@ -112,7 +129,16 @@ public class PlaylistController {
     }
 
 
-
+    @Operation(summary = "Obtiene una canción de una playlist.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado una canción.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))})})
     @GetMapping("/{id}/songs/{id2}")
     public ResponseEntity<Song> findOneSong(@PathVariable Long id2) {
 
@@ -144,6 +170,8 @@ public class PlaylistController {
             return ResponseEntity.ok().body(result);
         }
     }
+
+
 
 
 
