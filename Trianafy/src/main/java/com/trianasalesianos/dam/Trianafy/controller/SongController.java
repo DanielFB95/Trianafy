@@ -39,7 +39,7 @@ public class SongController {
     private final ArtistRepository artistRepository;
 
 
-    /*@GetMapping("/")
+    @GetMapping("/")
     public ResponseEntity<List<GetSongDto>> findAll() {
 
         List<Song> data = songRepository.findAll();
@@ -53,26 +53,21 @@ public class SongController {
                             .collect(Collectors.toList());
             return ResponseEntity.ok().body(result);
         }
-    }*/
-
-    @GetMapping("/")
-    public ResponseEntity<List<Song>> findAll(){
-
-        return ResponseEntity.ok().body(songRepository.findAll());
     }
-
 
     /**
      * Buscar cancion por ID
      */
    // @GetMapping(value = {"/{id}", "/lists/{id}/songs/{id2}"})
     @GetMapping("/{id}")
-    public ResponseEntity<Song> findOne(@PathVariable Long id) {
+    public ResponseEntity<GetSongDto> findOne(@PathVariable Long id) {
 
-        return ResponseEntity.of(songRepository.findById(id));
+        GetSongDto dto = dtoConverter.songToGetSongDto(songRepository.getById(id));
 
-
+        return ResponseEntity.ok().body(dto);
     }
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Song> edit(@RequestBody CreateSongDto s, @PathVariable Long id) {

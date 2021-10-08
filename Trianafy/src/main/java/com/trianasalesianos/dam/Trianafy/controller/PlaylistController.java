@@ -3,7 +3,6 @@ package com.trianasalesianos.dam.Trianafy.controller;
 import com.trianasalesianos.dam.Trianafy.dto.*;
 import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.model.Song;
-import com.trianasalesianos.dam.Trianafy.model.Playlist;
 import com.trianasalesianos.dam.Trianafy.repository.PlaylistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,14 +15,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/lists")
@@ -102,9 +98,19 @@ public class PlaylistController {
 
 
     @GetMapping("/{id}/songs/{id2}")
-    public ResponseEntity<Song> findOneSong(@PathVariable Long id2) {
+    public ResponseEntity<GetSongDto> findOneSong(@PathVariable Long id, @PathVariable Long id2) {
+        if(repository.getById(id) == null || songRepository.getById(id2) == null){
+            return ResponseEntity.badRequest().build();
+        }
 
-        return ResponseEntity.of(songRepository.findById(id2));
+        if(!repository.getById(id).getSongs().stream().allMatch(x -> x.getId() == id2)){
+
+            return ResponseEntity.notFound().build();
+        }
+
+       GetSongDto dto = songDto.songToGetSongDto(songRepository.getById(id2));
+
+        return ResponseEntity.ok().body(dto);
 
 
     }
@@ -159,17 +165,21 @@ public class PlaylistController {
     public ResponseEntity<Playlist> addSong(@RequestBody Playlist playlist, @PathVariable Long id1,
                                                 @PathVariable Long id2) {
 
-        if ((repository.findById(id1) == null) || (songRepository.findById(id2) == null)){
+        if ((repository.getById(id1) == null) || (songRepository.getById(id2) == null)){
             return ResponseEntity.badRequest().build();
         }else {
-            Playlist pl = repository.findById(id1).orElse(null);
 
-            Song song = songRepository.findById(id2).orElse(null);
+            Playlist pl = repository.getById(id1);
 
-            playlist.getSongs().add(song);
+            Song newSong = songRepository.getById(id2);
+
+            newSong.setPlaylist(pl);
+
+            playlist.getSongs().add(newSong);
+            repository.save(pl);
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(repository.save(pl));
+                    .body(pl);
 
         }
 
@@ -183,9 +193,16 @@ public class PlaylistController {
                     .notFound()
                     .build();
         }
-        List<Song> songs = repository.getById(id).getSongs();
-        songs.remove(songs.stream().filter( s -> s.getId() == id2));
-        repository.getById(id).setSongs(songs);
+
+        Playlist pl = repository.getById(id);
+
+        Song song = songRepository.getById(id2);
+
+        pl.getSongs().remove(song);
+
+        song.setPlaylist(null);
+        repository.save(pl);
+
         return ResponseEntity
                 .noContent()
                 .build();
