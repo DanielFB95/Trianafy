@@ -1,7 +1,6 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 import com.trianasalesianos.dam.Trianafy.model.Artist;
-import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 
@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/artist")
 @RequiredArgsConstructor
+@Tag(name = "Artist", description = "Controller of artist.")
 
 public class ArtistController {
 
@@ -56,7 +56,16 @@ public class ArtistController {
     }
 
 
-
+    @Operation(summary = "Borra un artista.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha encontrado el artista.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
 
@@ -76,6 +85,16 @@ public class ArtistController {
 
     }
 
+    @Operation(summary = "Obtiene todos los artistas.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado artistas.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han encontrado artistas.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @GetMapping("/")
     public ResponseEntity<List<Artist>> findAll(){
 
@@ -84,7 +103,16 @@ public class ArtistController {
 
     }
 
-
+    @Operation(summary = "Añade un artista.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha añadido un artista.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @PostMapping("/")
     public ResponseEntity<Artist> create(@RequestBody Artist n){
 
@@ -94,6 +122,16 @@ public class ArtistController {
 
     }
 
+    @Operation(summary = "Modifica un artista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado un artista y se ha modificado.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
     @PutMapping("/{id}")
     public ResponseEntity<Artist> edit(@RequestBody Artist a, @PathVariable Long id){
 
