@@ -21,7 +21,7 @@ public class Playlist {
     private String description;
 
     @OneToMany(mappedBy = "playlist", fetch = FetchType.EAGER)
-    @ElementCollection
+    //@ElementCollection
     private List<Song> songs;
 
     public Playlist(String name, String description, List<Song> songs) {

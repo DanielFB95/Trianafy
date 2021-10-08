@@ -16,6 +16,17 @@ public class SongDtoConverter {
 
     public GetSongDto songToGetSongDto(Song s){
 
+        if(s.getArtist() == null){
+            return GetSongDto.builder()
+                    .title(s.getTitle())
+                    .artist(null)
+                    .album(s.getAlbum())
+                    .year(s.getYear())
+                    .build();
+
+        }
+
+
         return GetSongDto.builder()
                 .title(s.getTitle())
                 .artist(s.getArtist().getName())

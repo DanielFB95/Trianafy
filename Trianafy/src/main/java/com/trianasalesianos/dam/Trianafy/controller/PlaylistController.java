@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -71,16 +72,22 @@ public class PlaylistController {
                             schema = @Schema(implementation = Playlist.class))})})
     @GetMapping("/{id}/songs/{id2}")
     public ResponseEntity<GetSongDto> findOneSong(@PathVariable Long id, @PathVariable Long id2) {
-        if (repository.getById(id) == null || songRepository.getById(id2) == null) {
+        /*if (repository.getById(id) == null) {
             return ResponseEntity.badRequest().build();
         }
 
         if (!repository.getById(id).getSongs().stream().allMatch(x -> x.getId() == id2)) {
 
             return ResponseEntity.notFound().build();
-        }
+        }*/
 
-        GetSongDto dto = songDto.songToGetSongDto(songRepository.getById(id2));
+        Optional<Song> laCancion = songRepository.findById(id2);
+
+        if (laCancion.isEmpty() || laCancion.get().getPlaylist() == null || laCancion.get().getPlaylist().getId() != id)
+            return ResponseEntity.notFound().build();
+
+
+        GetSongDto dto = songDto.songToGetSongDto(laCancion.get());
 
         return ResponseEntity.ok().body(dto);
 

@@ -1,6 +1,7 @@
 package com.trianasalesianos.dam.Trianafy.controller;
 
 import com.trianasalesianos.dam.Trianafy.model.Artist;
+import com.trianasalesianos.dam.Trianafy.model.Song;
 import com.trianasalesianos.dam.Trianafy.repository.ArtistRepository;
 import com.trianasalesianos.dam.Trianafy.repository.SongRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/artist")
@@ -71,11 +73,6 @@ public class ArtistController {
     @GetMapping("/{id}")
     public ResponseEntity<Artist>  findOne(@PathVariable Long id){
 
-        if(repository.getById(id) == null){
-
-            return ResponseEntity.badRequest().build();
-
-        }
         return ResponseEntity.of(repository.findById(id));
     }
 
@@ -135,15 +132,29 @@ public class ArtistController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
 
-
+    /*
         songsRepository.findAll()
                 .stream()
                 .filter( x -> x.getArtist().getId() == id)
                 .findFirst()
                 .get()
                 .setArtist(null);
+*/
+
+
+
+
+        List<Song> lista = songsRepository.findByArtistId(id);
+
+        if (!lista.isEmpty()) {
+            for(Song s : lista) {
+                s.setArtist(null);
+            }
+            songsRepository.saveAll(lista);
+        }
 
         repository.deleteById(id);
+
 
         return ResponseEntity.noContent()
                 .build();
