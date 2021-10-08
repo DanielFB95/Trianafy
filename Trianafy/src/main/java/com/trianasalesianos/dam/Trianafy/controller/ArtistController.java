@@ -38,52 +38,6 @@ public class ArtistController {
     private final SongRepository songsRepository;
 
 
-    @Operation(summary = "Muestra un artista por su id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Se han encontrado el artista",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Artist.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha encontrado el id del artista",
-                    content = @Content),
-    })
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Artist>  findOne(@PathVariable Long id){
-
-        return ResponseEntity.of(repository.findById(id));
-    }
-
-
-    @Operation(summary = "Borra un artista.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "Se ha encontrado el artista.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Artist.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "No se ha encontrado ningún artista.",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Artist.class))})})
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-
-
-        songsRepository.findAll()
-                                .stream()
-                                .filter( x -> x.getArtist().getId() == id)
-                                .findFirst()
-                                .get()
-                                .setArtist(null);
-
-        repository.deleteById(id);
-
-        return ResponseEntity.noContent()
-                             .build();
-
-
-    }
 
     @Operation(summary = "Obtiene todos los artistas.")
     @ApiResponses(value = {
@@ -99,9 +53,33 @@ public class ArtistController {
     public ResponseEntity<List<Artist>> findAll(){
 
         return ResponseEntity.ok()
-                            .body(repository.findAll());
+                .body(repository.findAll());
 
     }
+
+    @Operation(summary = "Muestra un artista por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado el artista",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado el id del artista",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))) })
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Artist>  findOne(@PathVariable Long id){
+
+        if(repository.getById(id) == null){
+
+            return ResponseEntity.badRequest().build();
+
+        }
+        return ResponseEntity.of(repository.findById(id));
+    }
+
+
 
     @Operation(summary = "Añade un artista.")
     @ApiResponses(value = {
@@ -142,6 +120,35 @@ public class ArtistController {
                     return c;
                 })
         );
+    }
+
+    @Operation(summary = "Borra un artista.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha encontrado el artista.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))})})
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+
+
+        songsRepository.findAll()
+                .stream()
+                .filter( x -> x.getArtist().getId() == id)
+                .findFirst()
+                .get()
+                .setArtist(null);
+
+        repository.deleteById(id);
+
+        return ResponseEntity.noContent()
+                .build();
+
+
     }
 
 

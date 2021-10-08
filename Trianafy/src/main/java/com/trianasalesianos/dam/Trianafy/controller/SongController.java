@@ -81,7 +81,35 @@ public class SongController {
     }
 
 
+    @Operation(summary = "Crea una canción")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha creado y guardado la canción",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Song.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha guardado la canción debido a un error",
+                    content = @Content)
+    })
+
+
+    @PostMapping("/")
+    public ResponseEntity<Song> create(@RequestBody CreateSongDto newSong) {
+
+
+
+        Song s = dtoConverter.createSongDtoToSong(newSong);
+
+        Artist a = artistRepository.findById(newSong.getArtistId()).orElse(null);
+
+        s.setArtist(a);
+
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(songRepository.save(s));
     }
+
 
     @Operation(summary = "Modifica una canción.")
     @ApiResponses(value = {
@@ -111,34 +139,6 @@ public class SongController {
 
 
 
-    @Operation(summary = "Crea una canción")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204",
-                    description = "Se ha creado y guardado la canción",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class))}),
-            @ApiResponse(responseCode = "400",
-                    description = "No se ha guardado la canción debido a un error",
-                    content = @Content)
-    })
-
-
-    @PostMapping("/")
-    public ResponseEntity<Song> create(@RequestBody CreateSongDto newSong) {
-
-
-
-        Song s = dtoConverter.createSongDtoToSong(newSong);
-
-        Artist a = artistRepository.findById(newSong.getArtistId()).orElse(null);
-
-        s.setArtist(a);
-
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(songRepository.save(s));
-    }
 
 
     @Operation(summary = "Elimina una canción")
